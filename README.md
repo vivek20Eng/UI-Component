@@ -1,5 +1,8 @@
 # 🎨 Next.js UI Components Project
+![Project Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
 
+## 🌐 [Live Demo](https://ui-component-rouge.vercel.app//)
+  
 ![Next.js](https://img.shields.io/badge/Next.js-13-black?style=for-the-badge&logo=next.js)
 ![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-4.9-blue?style=for-the-badge&logo=typescript)
@@ -37,22 +40,23 @@ Before you begin, ensure you have the following installed on your local machine:
 ## 🚀 Installation
 
 1. Clone the repository:
+   
    ```bash
    git clone https://github.com/vivek20Eng/UI-Component.git
-2. Navigate to the project directory:
+3. Navigate to the project directory:
     ```bash
     cd ui-components
-3. Install the dependencies:
+4. Install the dependencies:
     ```bash
     npm install
     # or
     yarn install
-4. 🖥 Usage
+5. 🖥 Usage
     ```bash
     npm run dev
     # or
     yarn dev
-5. open
+6. open
     ```bash
     Open http://localhost:3000 with your browser to see the result.
 ## 🧩 Components
