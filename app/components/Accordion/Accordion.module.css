@@ -1,0 +1,41 @@
+.accordion {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.accordionItem {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.accordionTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
+.accordionTitle h3 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.accordionIcon {
+  font-size: 24px;
+  font-weight: bold;
+  color: #999;
+}
+
+.accordionIconActive {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.accordionContent {
+  padding: 16px;
+}
