@@ -63,6 +63,25 @@ const ThreeJSBackground = () => {
 
     window.addEventListener('scroll', onScroll);
 
+    // Handle mouse movement for zoom effect
+    const mouse = new THREE.Vector2();
+    const onMouseMove = (event) => {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      // Calculate new camera position
+      const targetZ = 15 + mouse.y * 1; // Reduced multiplier for subtler effect
+
+      // Animate camera position
+      gsap.to(camera.position, {
+        z: targetZ,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
@@ -104,6 +123,7 @@ const ThreeJSBackground = () => {
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', onMouseMove);
       if (mountRef.current) {
         mountRef.current.removeChild(renderer.domElement);
       }
