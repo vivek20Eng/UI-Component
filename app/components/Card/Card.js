@@ -43,7 +43,7 @@ const Card = ({ id, title, description, isActive, onClick }) => {
 
       {/* Bottom section of card */}
       <div
-        className={`${styles.cardBottom} bg-blue-950 h-[6rem] w-[15rem] p-3`}
+        className={`${styles.cardBottom} bg-gradient-to-br from-blue-950 to-blue-950/50 bg-blue-950/50 backdrop:blur-sm h-[6rem] w-[15rem] p-3`}
       >
         <h3 className="text-red-300 font-bold truncate">{title}</h3>
         <p className="text-slate-400 text-sm my-2">{description}</p>

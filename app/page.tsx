@@ -44,7 +44,7 @@ const Home: React.FC = () => {
         <ThreeJSBackground />
       </div>
       <div className="relative z-10">
-        <PageLayout title="Welcome to my Next.js App">
+        <PageLayout title="Components UI">
           <div className="flex flex-wrap gap-6">
             {cardData.map((card, index) => (
               <Card
