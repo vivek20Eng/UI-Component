@@ -1,28 +1,58 @@
 .card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 24px;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease-in-out;
-  }
-  
-  .card:hover {
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  .activeCard {
-    border: 2px solid #4299e1;
-    box-shadow: 0 8px 12px rgba(66, 153, 225, 0.15);
-  }
-  
-  .cardTitle {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  .cardDescription {
-    font-size: 16px;
-    color: #555;
-  }
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.9rem;
+
+  cursor: pointer;
+  transition: box-shadow 0.3s ease-in-out;
+}
+.cardBottom {
+  border-bottom-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease-in-out;
+}
+.cardAbsolute {
+  border-top-right-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.activeCard {
+  border: 2px solid #4299e1;
+  box-shadow: 0 8px 12px rgba(66, 153, 225, 0.15);
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.cardDescription {
+  font-size: 16px;
+  color: #555;
+}
+.shadowAbsoluteLeft {
+  border-radius: 50%;
+  box-shadow: -11px -7px 0px black;
+}
+
+.shadowAbsoluteRight {
+  border-radius: 50%;
+  box-shadow: 8px -6px 0px black;
+}
+.shadowAbsoluteBottom {
+  border-radius: 30%;
+  box-shadow: -2px 2px 0px #200572;
+}
+.shadowAbsoluteCenter {
+  border-radius: 50%;
+  box-shadow: -8px 8px 0px black;
+}
+
+.shadowTopLeft {
+  border-radius: 50%;
+  box-shadow: -7px 7px 0px black;
+}
