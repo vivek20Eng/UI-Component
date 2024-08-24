@@ -45,7 +45,7 @@ const Home: React.FC = () => {
       </div>
       <div className="relative z-10">
         <PageLayout title="Components UI">
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap gap-8">
             {cardData.map((card, index) => (
               <Card
                 id={card.id}
