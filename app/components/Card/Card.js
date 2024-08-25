@@ -59,7 +59,7 @@ const Card = ({ id, title, description, isActive, onClick }) => {
               className={`${styles.shadowAbsoluteBottom} absolute -right-4 bottom-0 w-4 h-4 bg-transparent`}
             ></span>
             <section
-              class="font-bold text-xl flex items-center justify-center text-center h-full p-1 bg-slate-100 mx-4 rounded-lg mt-1"
+              className="font-bold text-xl flex items-center justify-center text-center h-full p-1 bg-slate-100 mx-4 rounded-lg mt-1"
               style={{ color: getRandomColor() }}
             >
               {id}
