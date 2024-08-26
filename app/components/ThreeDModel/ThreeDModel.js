@@ -28,7 +28,7 @@ const ThreeDModel = () => {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
-      75,
+      100,
       dimensions.width / dimensions.height,
       0.1,
       1000
@@ -73,15 +73,15 @@ const ThreeDModel = () => {
     });
 
     const spheres = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 100; i++) {
       const radius = Math.random() * 0.5 + 0.1;
-      const sphereGeometry = new THREE.SphereGeometry(radius, 32, 32);
+      const sphereGeometry = new THREE.SphereGeometry(radius, 20, 20);
       const sphere = new THREE.Mesh(sphereGeometry, reflectiveMaterial);
 
       sphere.position.set(
         Math.random() * 10 - 5,
         Math.random() * 10 - 5,
-        Math.random() * 5 - 2.5
+        Math.random() * 2 - 2.5
       );
 
       spheres.push(sphere);
@@ -90,7 +90,7 @@ const ThreeDModel = () => {
       gsap.to(sphere.position, {
         x: Math.random() * 10 - 5,
         y: Math.random() * 10 - 5,
-        z: Math.random() * 5 - 2.5,
+        z: Math.random() * -15 ,
         duration: 5 + Math.random() * 5,
         repeat: -1,
         yoyo: true,
