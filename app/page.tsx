@@ -12,6 +12,7 @@ interface CardData {
   title: string;
   description: string;
   path: string;
+  imagePath?: string; // Optional image path
 }
 
 const Home: React.FC = () => {
@@ -29,13 +30,15 @@ const Home: React.FC = () => {
       title: "Three.js Visualization",
       description: "Click to view the Three.js visualization",
       path: "/three-js",
-    },{
+      imagePath: "/cardPreviewImg/threejs.png", 
+    },
+    {
       id: 2,
       title: "Accordion",
       description: "Click to view the accordion page",
       path: "/accordion",
+      imagePath: "", 
     },
-    
   ];
 
   return (
@@ -54,6 +57,7 @@ const Home: React.FC = () => {
                 description={card.description}
                 isActive={activeCard === card.path}
                 onClick={() => handleCardClick(card.path)}
+                imagePath={card.imagePath} // Pass the image path
               />
             ))}
           </div>

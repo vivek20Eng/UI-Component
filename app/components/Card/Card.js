@@ -2,20 +2,21 @@ import React from "react";
 import styles from "./Card.module.css";
 import { Tilt } from "react-tilt";
 
+const defaultImage = "https://source.unsplash.com/random/800x600"; 
+
 const defaultOptions = {
-  reverse: false, // reverse the tilt direction
-  max: 25, // max tilt rotation (degrees)
-  perspective: 1000, // Transform perspective, the lower the more extreme the tilt gets.
-  scale: 1.1, // 2 = 200%, 1.5 = 150%, etc..
-  speed: 1000, // Speed of the enter/exit transition
-  transition: true, // Set a transition on enter/exit.
-  axis: null, // What axis should be disabled. Can be X or Y.
-  reset: true, // If the tilt effect has to be reset on exit.
-  easing: "cubic-bezier(.03,.98,.52,.99)", // Easing on enter/exit.
+  reverse: false,
+  max: 25,
+  perspective: 1000,
+  scale: 1.1,
+  speed: 1000,
+  transition: true,
+  axis: null,
+  reset: true,
+  easing: "cubic-bezier(.03,.98,.52,.99)",
 };
 
-const Card = ({ id, title, description, isActive, onClick }) => {
-  // Function to generate a random color
+const Card = ({ id, title, description, isActive, onClick, imagePath }) => {
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -36,6 +37,11 @@ const Card = ({ id, title, description, isActive, onClick }) => {
         {/* Top section of card */}
         <div
           className={`${styles.card} relative h-[10rem] w-[15rem] bg-white border-b-8 border-black`}
+          style={{
+            backgroundImage: `url(${imagePath || defaultImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
         >
           <span
             className={`${styles.shadowAbsoluteCenter} absolute left-[50%] z-10 bottom-0 w-4 h-4 bg-transparent`}
@@ -45,16 +51,14 @@ const Card = ({ id, title, description, isActive, onClick }) => {
           ></span>
           {/* Absolute card section */}
           <div
-            className={`${styles.cardAbsolute} absolute -bottom-[8px] h-12  w-6/12 border-t-8 border-r-8 border-black bg-blue-950`}
+            className={`${styles.cardAbsolute} absolute -bottom-[8px] h-12 w-6/12 border-t-8 border-r-8 border-black bg-blue-950`}
           >
             <span
               className={`${styles.shadowAbsoluteLeft} absolute left-0 w-4 h-4 bg-blue-950`}
             ></span>
-
             <span
               className={`${styles.shadowAbsoluteRight} absolute right-0 w-4 h-4 bg-blue-950`}
             ></span>
-
             <span
               className={`${styles.shadowAbsoluteBottom} absolute -right-4 bottom-0 w-4 h-4 bg-transparent`}
             ></span>
@@ -66,7 +70,6 @@ const Card = ({ id, title, description, isActive, onClick }) => {
             </section>
           </div>
         </div>
-
         {/* Bottom section of card */}
         <div
           className={`${styles.cardBottom} bg-gradient-to-br from-blue-950 to-blue-950/50 bg-blue-950/50 backdrop:blur-sm h-[6rem] w-[15rem] p-3`}
