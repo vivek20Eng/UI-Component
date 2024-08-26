@@ -21,6 +21,9 @@ const ThreeDModel = () => {
   const [currentImageName, setCurrentImageName] = useState(backgroundImages[0]);
   // State to track if background is changing
   const [isChanging, setIsChanging] = useState(false);
+  // Refs for custom cursor
+  const cursorRef = useRef(null);
+  const cursorBorderRef = useRef(null);
 
   // Effect to handle window resizing
   useEffect(() => {
@@ -57,7 +60,7 @@ const ThreeDModel = () => {
     renderer.setSize(dimensions.width, dimensions.height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 0.5;
-    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     mountRef.current.appendChild(renderer.domElement);
 
     // Create a background sphere for 360-degree image
@@ -142,31 +145,35 @@ const ThreeDModel = () => {
     directionalLight.position.set(10, 15, 15);
     scene.add(directionalLight);
 
-    // Handle mouse movement for camera rotation
+    // Handle mouse movement for camera rotation and custom cursor
     const onMouseMove = (event) => {
       mousePosition.current = {
         x: (event.clientX / window.innerWidth) * 2 - 1,
         y: -(event.clientY / window.innerHeight) * 2 + 1,
       };
+
+      // Update custom cursor position
+      if (cursorRef.current && cursorBorderRef.current) {
+        cursorRef.current.style.left = `${event.clientX}px`;
+        cursorRef.current.style.top = `${event.clientY}px`;
+        cursorBorderRef.current.style.left = `${event.clientX}px`;
+        cursorBorderRef.current.style.top = `${event.clientY}px`;
+      }
     };
     window.addEventListener("mousemove", onMouseMove);
 
     // Smooth rotation animation based on mouse position
-    const rotationAnimation = { x: 0, y: 0 };
-    gsap.to(rotationAnimation, {
-      x: () => (mousePosition.current.y * Math.PI) / 4,
-      y: () => (mousePosition.current.x * Math.PI) / 4,
-      duration: 1,
-      ease: "power2.out",
-      repeat: -1,
-      repeatRefresh: true,
-      onUpdate: () => {
-        backgroundSphere.rotation.x = rotationAnimation.x;
-        backgroundSphere.rotation.y = rotationAnimation.y;
-        camera.rotation.x = -rotationAnimation.x;
-        camera.rotation.y = -rotationAnimation.y;
-      },
-    });
+    const updateRotation = () => {
+      const targetX = (mousePosition.current.y * Math.PI) / 4;
+      const targetY = (mousePosition.current.x * Math.PI) / 4;
+
+      backgroundSphere.rotation.x +=
+        (targetX - backgroundSphere.rotation.x) * 0.05;
+      backgroundSphere.rotation.y +=
+        (targetY - backgroundSphere.rotation.y) * 0.05;
+      camera.rotation.x = -backgroundSphere.rotation.x;
+      camera.rotation.y = -backgroundSphere.rotation.y;
+    };
 
     // Add a particle system for a subtle effect
     const particleGeometry = new THREE.BufferGeometry();
@@ -192,6 +199,7 @@ const ThreeDModel = () => {
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
+      updateRotation();
       particleSystem.rotation.y += 0.0005;
       renderer.render(scene, camera);
     };
@@ -206,19 +214,16 @@ const ThreeDModel = () => {
   }, [dimensions, currentImageName]);
 
   // Function to change background image
-  const changeBackgroundImage = () => {
+  const changeBackgroundImage = (newImage) => {
     if (isChanging) return;
     setIsChanging(true);
-    setCurrentImageName((prevImage) => {
-      const currentIndex = backgroundImages.indexOf(prevImage);
-      const nextIndex = (currentIndex + 1) % backgroundImages.length;
-      return backgroundImages[nextIndex];
-    });
+    setCurrentImageName(newImage);
   };
 
-  // Render the 3D scene container and change background button
+  // Render the 3D scene container and background selector cards
   return (
     <>
+      {/* 3D scene container */}
       <div
         ref={mountRef}
         style={{
@@ -230,28 +235,69 @@ const ThreeDModel = () => {
           zIndex: -1,
         }}
       ></div>
-      <button
-        onClick={changeBackgroundImage}
-        disabled={isChanging}
+      {/* Background selector cards */}
+      <div
         style={{
           position: "absolute",
-          top: "20px",
-          right: "20px",
+          bottom: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          gap: "10px",
           zIndex: 10,
-          padding: "12px 24px",
-          fontSize: "16px",
-          fontWeight: "bold",
-          backgroundColor: isChanging ? "#cccccc" : "red",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: isChanging ? "default" : "pointer",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-          transition: "all 0.3s ease",
         }}
       >
-        {isChanging ? "Changing..." : "Change Background"}
-      </button>
+        {backgroundImages.map((image, index) => (
+          <div
+            key={index}
+            onClick={() => changeBackgroundImage(image)}
+            style={{
+              width: "60px",
+              height: "60px",
+              backgroundImage: `url(/${image})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              borderRadius: "10px",
+              cursor: isChanging ? "default" : "pointer",
+              opacity: isChanging ? 0.5 : 1,
+              border: currentImageName === image ? "3px solid white" : "none",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              transition: "all 0.3s ease",
+            }}
+          ></div>
+        ))}
+      </div>
+      {/* Custom cursor with glass effect */}
+      <div
+        ref={cursorRef}
+        style={{
+          position: "fixed",
+          width: "12px",
+          height: "12px",
+          borderRadius: "50%",
+          backgroundColor: "white",
+          opacity: 0.5,
+          pointerEvents: "none",
+          zIndex: 9999,
+          mixBlendMode: "difference",
+          transform: "translate(-50%, -50%)",
+        }}
+      ></div>
+      <div
+        ref={cursorBorderRef}
+        style={{
+          position: "fixed",
+          width: "40px",
+          height: "40px",
+          borderRadius: "50%",
+          border: "2px solid orange",
+          opacity: 1,
+          pointerEvents: "none",
+          zIndex: 9998,
+          mixBlendMode: "difference",
+          transform: "translate(-50%, -50%)",
+        }}
+      ></div>
     </>
   );
 };
