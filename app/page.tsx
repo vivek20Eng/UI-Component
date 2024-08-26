@@ -26,16 +26,16 @@ const Home: React.FC = () => {
   const cardData: CardData[] = [
     {
       id: 1,
+      title: "Three.js Visualization",
+      description: "Click to view the Three.js visualization",
+      path: "/three-js",
+    },{
+      id: 2,
       title: "Accordion",
       description: "Click to view the accordion page",
       path: "/accordion",
     },
-    {
-      id: 2,
-      title: "Three.js Visualization",
-      description: "Click to view the Three.js visualization",
-      path: "/three-js",
-    },
+    
   ];
 
   return (

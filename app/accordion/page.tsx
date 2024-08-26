@@ -3,7 +3,11 @@
 import React from 'react';
 import PageLayout from '../components/PageLayout/PageLayout';
 import Accordion from '../components/Accordion/Accordion';
-
+import BreadCrumbLayout from '../components/layouts/BreadCrumbLayout'
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Accordian', href: '/' },
+];
 const AccordionPage = () => {
   const accordionItems = [
     {
@@ -22,6 +26,7 @@ const AccordionPage = () => {
 
   return (
     <PageLayout title="Accordion Page">
+    <BreadCrumbLayout breadcrumbs={breadcrumbs}/>
       <Accordion items={accordionItems} />
     </PageLayout>
   );

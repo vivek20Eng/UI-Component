@@ -3,10 +3,15 @@
 import React from "react";
 import PageLayout from "../components/PageLayout/PageLayout";
 import ThreeDModel from "../components/ThreeDModel/ThreeDModel";
-
+import BreadCrumbLayout from "../components/layouts/BreadCrumbLayout";
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Three.js Visualization', href: '/' },
+];
 const ThreePage = () => {
   return (
     <PageLayout title="Three.js Visualization">
+      <BreadCrumbLayout breadcrumbs={breadcrumbs}/>
       {/* 3D Background */}
       <ThreeDModel />
 
