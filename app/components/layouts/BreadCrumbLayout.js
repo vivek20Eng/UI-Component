@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 function BreadCrumbLayout({ breadcrumbs }) {
   return (
-    <nav className="bg-gray-900/20 backdrop-blur-sm px-4 py-2 my-4 rounded-md inline-block">
+    <nav className="bg-gray-900/20 border border-slate-200/50 backdrop-blur-sm px-4 py-2 my-4 rounded-md inline-block">
       <ol className="list-reset flex">
         {breadcrumbs.map((crumb, index) => (
           <li key={index} className="flex items-center">
@@ -15,7 +15,7 @@ function BreadCrumbLayout({ breadcrumbs }) {
                 {crumb.label}
               </Link>
             ) : (
-              <span className="text-gray-500 font-bold">
+              <span className="text-red-300 font-bold">
                 {crumb.label}
               </span>
             )}
