@@ -11,21 +11,25 @@ const backgroundImages = [
 ];
 
 const ThreeDModel = () => {
-  // Ref for the container element
+  // Refs for DOM elements and renderer
   const mountRef = useRef(null);
-  // State for container dimensions
+  const rendererRef = useRef(null);
+  
+  // State for component dimensions
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  
   // Ref to store current mouse position
   const mousePosition = useRef({ x: 0, y: 0 });
-  // State for current background image
+  
+  // State for current background image and change status
   const [currentImageName, setCurrentImageName] = useState(backgroundImages[0]);
-  // State to track if background is changing
   const [isChanging, setIsChanging] = useState(false);
-  // Refs for custom cursor
+  
+  // Refs for custom cursor elements
   const cursorRef = useRef(null);
   const cursorBorderRef = useRef(null);
 
-  // Effect to handle window resizing
+  // Effect to update dimensions on window resize
   useEffect(() => {
     const updateDimensions = () => {
       if (mountRef.current) {
@@ -42,7 +46,7 @@ const ThreeDModel = () => {
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  // Main effect for setting up and rendering the 3D scene
+  // Main effect for setting up and animating the 3D scene
   useEffect(() => {
     if (dimensions.width === 0 || dimensions.height === 0) return;
 
@@ -57,13 +61,14 @@ const ThreeDModel = () => {
     camera.position.z = 0.1;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
+    rendererRef.current = renderer;
     renderer.setSize(dimensions.width, dimensions.height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 0.5;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     mountRef.current.appendChild(renderer.domElement);
 
-    // Create a background sphere for 360-degree image
+    // Create background sphere
     const textureLoader = new THREE.TextureLoader();
     const cityImageUrl = `/${currentImageName}`;
 
@@ -109,7 +114,7 @@ const ThreeDModel = () => {
       envMapIntensity: 1,
     });
 
-    // Create and animate multiple reflective spheres
+    // Create and animate multiple spheres
     const spheres = [];
     for (let i = 0; i < 100; i++) {
       const radius = Math.random() * 0.5 + 0.1;
@@ -125,7 +130,7 @@ const ThreeDModel = () => {
       spheres.push(sphere);
       scene.add(sphere);
 
-      // Animate sphere movement
+      // Animate sphere position
       gsap.to(sphere.position, {
         x: Math.random() * 10 - 5,
         y: Math.random() * 10 - 5,
@@ -145,14 +150,13 @@ const ThreeDModel = () => {
     directionalLight.position.set(10, 15, 15);
     scene.add(directionalLight);
 
-    // Handle mouse movement for camera rotation and custom cursor
+    // Handle mouse movement for rotation and custom cursor
     const onMouseMove = (event) => {
       mousePosition.current = {
         x: (event.clientX / window.innerWidth) * 2 - 1,
         y: -(event.clientY / window.innerHeight) * 2 + 1,
       };
 
-      // Update custom cursor position
       if (cursorRef.current && cursorBorderRef.current) {
         cursorRef.current.style.left = `${event.clientX}px`;
         cursorRef.current.style.top = `${event.clientY}px`;
@@ -162,7 +166,7 @@ const ThreeDModel = () => {
     };
     window.addEventListener("mousemove", onMouseMove);
 
-    // Smooth rotation animation based on mouse position
+    // Update rotation based on mouse position
     const updateRotation = () => {
       const targetX = (mousePosition.current.y * Math.PI) / 4;
       const targetY = (mousePosition.current.x * Math.PI) / 4;
@@ -175,7 +179,7 @@ const ThreeDModel = () => {
       camera.rotation.y = -backgroundSphere.rotation.y;
     };
 
-    // Add a particle system for a subtle effect
+    // Create particle system
     const particleGeometry = new THREE.BufferGeometry();
     const particleCount = 1000;
     const posArray = new Float32Array(particleCount * 3);
@@ -197,8 +201,9 @@ const ThreeDModel = () => {
     scene.add(particleSystem);
 
     // Animation loop
+    let animationFrameId;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       updateRotation();
       particleSystem.rotation.y += 0.0005;
       renderer.render(scene, camera);
@@ -209,7 +214,11 @@ const ThreeDModel = () => {
     // Cleanup function
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
-      mountRef.current.removeChild(renderer.domElement);
+      cancelAnimationFrame(animationFrameId);
+      if (mountRef.current && rendererRef.current) {
+        mountRef.current.removeChild(rendererRef.current.domElement);
+      }
+      renderer.dispose();
     };
   }, [dimensions, currentImageName]);
 
@@ -220,10 +229,9 @@ const ThreeDModel = () => {
     setCurrentImageName(newImage);
   };
 
-  // Render the 3D scene container and background selector cards
   return (
     <>
-      {/* 3D scene container */}
+      {/* Container for Three.js scene */}
       <div
         ref={mountRef}
         style={{
@@ -234,8 +242,8 @@ const ThreeDModel = () => {
           height: "100%",
           zIndex: -1,
         }}
-      ></div>
-      {/* Background selector cards */}
+      />
+      {/* Background image selector */}
       <div
         style={{
           position: "absolute",
@@ -264,10 +272,10 @@ const ThreeDModel = () => {
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
               transition: "all 0.3s ease",
             }}
-          ></div>
+          />
         ))}
       </div>
-      {/* Custom cursor with glass effect */}
+      {/* Custom cursor dot */}
       <div
         ref={cursorRef}
         style={{
@@ -282,7 +290,8 @@ const ThreeDModel = () => {
           mixBlendMode: "difference",
           transform: "translate(-50%, -50%)",
         }}
-      ></div>
+      />
+      {/* Custom cursor border */}
       <div
         ref={cursorBorderRef}
         style={{
@@ -297,7 +306,7 @@ const ThreeDModel = () => {
           mixBlendMode: "difference",
           transform: "translate(-50%, -50%)",
         }}
-      ></div>
+      />
     </>
   );
 };
